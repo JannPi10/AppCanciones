@@ -13,48 +13,36 @@ class CancionAdapter(private val context: Context, private val canciones: List<C
                      private val musicPlayer: MusicPlayer) :
     RecyclerView.Adapter<CancionAdapter.CancionViewHolder>() {
 
-    private var mediaPlayer: MediaPlayer? = null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CancionViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_cancion, parent, false)
         return CancionViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CancionViewHolder, position: Int) {
-        /**val cancion = canciones[position]
-        holder.titulo.text = cancion.titulo
-
-
-        holder.btnPlay.setOnClickListener {
-            mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(context, cancion.archivo)
-            mediaPlayer?.start()
-        }
-
-        holder.btnStop.setOnClickListener {
-            mediaPlayer?.stop()
-            mediaPlayer?.release()
-            mediaPlayer = null
-        }*/
-
         val cancion = canciones[position]
-        holder.titulo.text = cancion.titulo
-
-        holder.btnPlay.setOnClickListener{
-            musicPlayer.playSong(cancion.archivo)
-        }
-
-        holder.btnStop.setOnClickListener {
-            musicPlayer.stopSong()
-        }
+        holder.bind(cancion)
     }
 
     override fun getItemCount(): Int = canciones.size
 
-    class CancionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titulo: TextView = itemView.findViewById(R.id.tvTitulo)
-        val btnPlay: Button = itemView.findViewById(R.id.btnPlay)
-        val btnStop: Button = itemView.findViewById(R.id.btnStop)
+    inner class CancionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val titulo: TextView = itemView.findViewById(R.id.tvTitulo)
+        private val btnPlay: Button = itemView.findViewById(R.id.btnPlay)
+        private val btnStop: Button = itemView.findViewById(R.id.btnStop)
+
+
+        fun bind(cancion: Cancion){
+
+            titulo.text = cancion.titulo
+
+            btnPlay.setOnClickListener{
+                musicPlayer.playSong(cancion.archivo)
+            }
+
+            btnStop.setOnClickListener {
+                musicPlayer.stopSong()
+            }
+        }
 
     }
 }
